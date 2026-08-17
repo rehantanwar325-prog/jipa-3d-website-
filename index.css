@@ -2956,32 +2956,37 @@ section[id] {
     display: none;
   }
 
+  /* Disable heavy floating fruit particles on mobile for 60fps */
+  .floating-fruits-container {
+    display: none !important;
+  }
+
+  /* Remove expensive GPU-heavy blur on mobile */
+  .ambient-glow {
+    filter: blur(25px) !important;
+    opacity: 0.6;
+  }
+
   /* Simpler reveal animations */
   [data-animate="fade-left"],
-  [data-animate="fade-right"] {
-    transform: translateY(40px);
+  [data-animate="fade-right"],
+  [data-animate="fade-up"] {
+    transform: translateY(20px);
   }
 
-  /* Reduce floating particle density */
-  .fruit-particle {
-    font-size: 1.2rem;
-  }
-
-  .fruit-particle.depth-near {
-    font-size: 1.5rem;
-  }
-
-  /* Disable 3D flip on mobile — use simple fade */
+  /* Disable 3D flip on mobile — use clean instant/fade */
   [data-3d-flip] {
-    transform: translateY(40px);
+    transform: translateY(20px);
+    opacity: 1 !important;
   }
 
   [data-3d-flip].flipped-in {
     transform: translateY(0);
+    opacity: 1 !important;
   }
 
   [data-3d-flip]:hover {
-    transform: translateY(-4px);
+    transform: none;
   }
 
   /* Disable lightStreak on mobile */
@@ -2995,13 +3000,15 @@ section[id] {
     pointer-events: none;
   }
 
-  /* Reduce video rendering load on mobile */
-  .prod-video {
-    will-change: auto;
-  }
-
-  .fullscreen-bg-video {
-    will-change: auto;
+  /* Hardware-accelerated smooth video rendering on mobile */
+  .prod-video,
+  .fullscreen-bg-video,
+  .product-card,
+  .glass-panel {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }
 
