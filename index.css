@@ -179,6 +179,10 @@ img {
   line-height: 1.75;
 }
 
+section[id] {
+  scroll-margin-top: 85px;
+}
+
 /* ================= HEADER / NAVBAR ================= */
 .header {
   position: fixed;
@@ -1829,11 +1833,13 @@ img {
 
   /* Compact Mobile Sections */
   .section {
-    padding: 3.2rem 0;
+    padding: 4.5rem 0 3.2rem;
+    scroll-margin-top: 80px;
   }
 
   .section-title-wrap {
     margin-bottom: 2rem;
+    padding-top: 0.5rem;
   }
 
   .main-heading {
@@ -1848,7 +1854,8 @@ img {
 
   /* Products Section Mobile */
   .products-section {
-    padding: 3rem 0 3.5rem;
+    padding: 5rem 0 3.5rem;
+    scroll-margin-top: 80px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
