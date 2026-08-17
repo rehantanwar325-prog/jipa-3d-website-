@@ -2,9 +2,19 @@
    JEPH BEV PVT. LTD. — NATURES PRIDE INTERACTIVE SCRIPTS
    Fullscreen Autoplay Video Hero, 3D Tilt, Stats & WhatsApp
    + 3D IMMERSIVE UPGRADE: Three.js, GSAP, Particles
+   
+   FIXED: All video playback issues, mobile compatibility,
+   missing functions, lazy loading, infinite loops
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ================= VIDEO SOURCE CONSTANTS =================
+  // Portrait (9:16) video for mobile / vertical screens
+  const VIDEO_9_16 = 'logoremover-1786882988011_AOz4B6BX.mp4';
+  // Landscape (16:9) video for desktop / widescreen
+  const VIDEO_16_9 = 'logoremover_1786882988011.mp4';
+
 
   // ================= 1. HEADER & NAVBAR SCROLL =================
   const header = document.getElementById('header');
@@ -98,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ================= 2. FULLSCREEN HERO VIDEO CONTROLLER =================
+  // ================= 2. HERO VIDEO — SMART SOURCE SWITCHING =================
   const bgVideo = document.getElementById('heroFullscreenVideo');
   const heroSection = document.getElementById('home');
   const heroVideoStopBtn = document.getElementById('heroVideoStopBtn');
@@ -108,6 +118,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const videoFlashIndicator = document.getElementById('videoFlashIndicator');
   const videoFlashIcon = document.getElementById('videoFlashIcon');
 
+  // Helper: Detect if current screen is portrait/mobile
+  const isPortraitOrMobile = () => {
+    return window.innerWidth <= 768 || window.matchMedia('(orientation: portrait)').matches;
+  };
+
+  // Sync Hero Video Source — switches between portrait & landscape videos
+  const syncHeroVideoSource = () => {
+    if (!bgVideo) return;
+
+    const targetSrc = isPortraitOrMobile() ? VIDEO_9_16 : VIDEO_16_9;
+    const currentSource = bgVideo.querySelector('source');
+    
+    // Only switch if the source is actually different
+    if (currentSource && currentSource.src && currentSource.src.includes(targetSrc)) return;
+
+    const wasPlaying = !bgVideo.paused;
+    const wasMuted = bgVideo.muted;
+    
+    if (currentSource) {
+      currentSource.src = targetSrc;
+    }
+    
+    bgVideo.load();
+    bgVideo.muted = wasMuted;
+
+    if (wasPlaying) {
+      bgVideo.play().catch(() => {
+        bgVideo.muted = true;
+        bgVideo.play().catch(() => {});
+      });
+    }
+  };
+
   if (bgVideo) {
     let isManuallyPaused = false;
     let flashTimeout = null;
@@ -116,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.defaultMuted = true;
     bgVideo.playsInline = true;
     bgVideo.loop = true;
+
+    // Set the correct source for current device immediately
+    syncHeroVideoSource();
 
     // Helper: flash state icon momentarily on click
     const flashVideoStatus = (isPaused) => {
@@ -171,9 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial play setup
     updateAudioButton();
+    
+    // Wait for video data before playing
+    const onVideoReady = () => {
+      safePlayHeroVideo();
+    };
+    
+    bgVideo.addEventListener('loadeddata', onVideoReady, { once: false });
+    bgVideo.addEventListener('canplay', onVideoReady, { once: false });
+    
+    // Try initial play
     safePlayHeroVideo();
-    bgVideo.addEventListener('loadeddata', safePlayHeroVideo);
-    bgVideo.addEventListener('canplay', safePlayHeroVideo);
 
     // Auto-loop failsafe
     bgVideo.addEventListener('ended', () => {
@@ -251,18 +305,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Listen for orientation changes — switch video source
     if (window.screen && window.screen.orientation) {
       window.screen.orientation.addEventListener('change', () => {
-        setTimeout(syncHeroVideoSource, 150);
+        setTimeout(syncHeroVideoSource, 200);
       });
     }
+    
+    // Also listen for resize (covers orientation change on iOS etc)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(syncHeroVideoSource, 300);
+    });
   }
 
 
-  // ================= 2.5 PRODUCT CARDS (COCO & MANGO) AUTOPLAY VIDEOS =================
+  // ================= 2.5 PRODUCT CARDS — LAZY-LOADED AUTOPLAY VIDEOS =================
   const setupProductCardVideo = (videoId) => {
     const vid = document.getElementById(videoId);
     if (!vid) return;
+
+    const container = vid.closest('.product-image-container');
+    const fallbackImg = container ? container.querySelector('.prod-fallback-img') : null;
+    let videoLoaded = false;
+    let isPlaying = false;
 
     vid.muted = true;
     vid.defaultMuted = true;
@@ -270,22 +337,76 @@ document.addEventListener('DOMContentLoaded', () => {
     vid.playsInline = true;
     vid.loop = true;
 
+    // Show fallback image initially, hide when video can play
+    const showFallback = () => {
+      if (fallbackImg) {
+        fallbackImg.style.display = 'block';
+        vid.style.display = 'none';
+      }
+    };
+
+    const hideFallback = () => {
+      if (fallbackImg) {
+        fallbackImg.style.display = 'none';
+        vid.style.display = 'block';
+      }
+    };
+
+    // Initially show fallback
+    showFallback();
+
     const startPlay = () => {
+      if (isPlaying) return; // Prevent duplicate calls
+      
       vid.muted = true;
+      
+      // If video hasn't loaded yet, trigger load first
+      if (!videoLoaded) {
+        vid.preload = 'auto';
+        vid.load();
+        videoLoaded = true;
+      }
+
       const playPromise = vid.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay blocked by policy - retry on first scroll or touch
+        playPromise.then(() => {
+          isPlaying = true;
+          hideFallback();
+        }).catch(() => {
+          // Autoplay blocked — show fallback image instead
+          showFallback();
+          isPlaying = false;
+          
+          // Retry on first user interaction
           const resumeOnInteraction = () => {
             vid.muted = true;
-            vid.play().catch(() => {});
+            vid.play().then(() => {
+              isPlaying = true;
+              hideFallback();
+            }).catch(() => {
+              showFallback();
+            });
           };
-          ['scroll', 'touchstart', 'click', 'mousemove'].forEach(evt => {
+          ['scroll', 'touchstart', 'click'].forEach(evt => {
             window.addEventListener(evt, resumeOnInteraction, { once: true, passive: true });
           });
         });
       }
     };
+
+    const stopPlay = () => {
+      if (!vid.paused) {
+        vid.pause();
+      }
+      isPlaying = false;
+    };
+
+    // When video can play, hide fallback
+    vid.addEventListener('canplay', () => {
+      if (isPlaying || !vid.paused) {
+        hideFallback();
+      }
+    });
 
     // Auto-loop failsafe
     vid.addEventListener('ended', () => {
@@ -293,32 +414,28 @@ document.addEventListener('DOMContentLoaded', () => {
       startPlay();
     });
 
-    // If video pauses unexpectedly while in view, resume it
-    vid.addEventListener('pause', () => {
-      if (!document.hidden && vid.getBoundingClientRect().top < window.innerHeight && vid.getBoundingClientRect().bottom > 0) {
-        setTimeout(startPlay, 100);
-      }
+    // Handle video errors gracefully — show fallback
+    vid.addEventListener('error', () => {
+      showFallback();
+      isPlaying = false;
     });
 
-    // Start playback immediately and when data loaded
-    startPlay();
-    vid.addEventListener('loadeddata', startPlay);
-    vid.addEventListener('canplay', startPlay);
-
-    // Viewport Visibility Observer
+    // Viewport Visibility Observer — LAZY LOAD: only start when in view
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             startPlay();
           } else {
-            if (!vid.paused) {
-              vid.pause();
-            }
+            stopPlay();
           }
         });
-      }, { threshold: 0.1 });
-      observer.observe(vid);
+      }, { threshold: 0.1, rootMargin: '100px' });
+      
+      observer.observe(container || vid);
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      startPlay();
     }
   };
 
@@ -505,9 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Choose optimal initial ratio based on current viewport
-      const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-      const isMobileView = window.innerWidth <= 768;
-      const initialRatio = (isPortrait || isMobileView) ? '9-16' : '16-9';
+      const initialRatio = isPortraitOrMobile() ? '9-16' : '16-9';
 
       setModalRatio(initialRatio);
 
@@ -591,7 +706,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setClearColor(0x000000, 0);
 
     // Create floating particle orbs
-    const particleCount = 80;
+    const particleCount = window.innerWidth <= 768 ? 30 : 80;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -790,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fruits = ['🥥', '🥭', '🍈', '🍇', '🍊', '🫐', '🍋'];
     const depthLayers = ['depth-far', 'depth-mid', 'depth-near'];
-    const particleCount = window.innerWidth <= 768 ? 8 : 15;
+    const particleCount = window.innerWidth <= 768 ? 6 : 12;
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('span');
@@ -819,8 +934,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= INITIALIZE ALL 3D ENHANCEMENTS =================
   // Wait for deferred scripts to load
   const waitForLibs = () => {
-    // Three.js particles
-    if (typeof THREE !== 'undefined') {
+    // Three.js particles — skip on mobile for performance
+    if (typeof THREE !== 'undefined' && window.innerWidth > 768) {
       initThreeJsParticles();
     }
 
@@ -841,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(waitForLibs, 300);
     // Fallback retry
     setTimeout(() => {
-      if (typeof THREE !== 'undefined' && !document.querySelector('.products-3d-canvas[data-initialized]')) {
+      if (typeof THREE !== 'undefined' && window.innerWidth > 768 && !document.querySelector('.products-3d-canvas[data-initialized]')) {
         initThreeJsParticles();
       }
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {

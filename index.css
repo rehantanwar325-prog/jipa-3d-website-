@@ -1050,6 +1050,22 @@ section[id] {
   display: block;
 }
 
+/* Fallback image: shown by JS when video can't play */
+.prod-fallback-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 280px;
+  max-width: 90%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.12));
+  z-index: 1;
+  display: block;
+}
+
 .product-card:hover .prod-img {
   transform: scale(1.05) translateY(-3px);
 }
@@ -2974,7 +2990,18 @@ section[id] {
   }
 
   .products-3d-canvas {
-    opacity: 0.35;
+    opacity: 0;
+    display: none;
+    pointer-events: none;
+  }
+
+  /* Reduce video rendering load on mobile */
+  .prod-video {
+    will-change: auto;
+  }
+
+  .fullscreen-bg-video {
+    will-change: auto;
   }
 }
 

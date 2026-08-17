@@ -78,10 +78,9 @@
         playsinline
         webkit-playsinline
         disablepictureinpicture
-        preload="auto">
-        <!-- 9:16 Portrait for Mobile & Vertical Screens -->
-        <source src="logoremover-1786882988011_AOz4B6BX.mp4" type="video/mp4" media="(max-width: 768px), (orientation: portrait)" />
-        <!-- 16:9 Landscape for Desktop & Widescreen Displays -->
+        preload="metadata"
+        poster="">
+        <!-- JS will dynamically set the correct source based on device -->
         <source src="logoremover_1786882988011.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -133,17 +132,15 @@
             <video 
               class="prod-video" 
               id="cocoProductVideo" 
-              autoplay 
               muted 
               loop 
               playsinline 
               webkit-playsinline
               disablepictureinpicture
-              preload="auto">
+              preload="none">
               <source src="coco-card-video.mp4" type="video/mp4" />
-              <source src="logoremover_1786905709706.mp4" type="video/mp4" />
-              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/RS/SQ/CF/37115510/natures-pride-coco-thunder-250x250.png" alt="Natures Pride Coco Thunder" class="prod-img" />
             </video>
+            <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/RS/SQ/CF/37115510/natures-pride-coco-thunder-250x250.png" alt="Natures Pride Coco Thunder" class="prod-img prod-fallback-img" loading="lazy" />
           </div>
           <div class="product-details">
             <h3 class="prod-title">Coco Thunder</h3>
@@ -162,17 +159,15 @@
             <video 
               class="prod-video" 
               id="mangoProductVideo" 
-              autoplay 
               muted 
               loop 
               playsinline 
               webkit-playsinline
               disablepictureinpicture
-              preload="auto">
+              preload="none">
               <source src="mango-card-video.mp4" type="video/mp4" />
-              <source src="mujha_ak_vedio_bana_kr_do_is_k (online-video-cutter.com).mp4" type="video/mp4" />
-              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/AH/CH/WV/37115510/natures-pride-mango-fruit-drink-250x250.png" alt="Natures Pride Mango Fruit Drink" class="prod-img" />
             </video>
+            <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/AH/CH/WV/37115510/natures-pride-mango-fruit-drink-250x250.png" alt="Natures Pride Mango Fruit Drink" class="prod-img prod-fallback-img" loading="lazy" />
           </div>
           <div class="product-details">
             <h3 class="prod-title">Mango Fruit Drink</h3>
@@ -191,17 +186,15 @@
             <video 
               class="prod-video" 
               id="guavaProductVideo" 
-              autoplay 
               muted 
               loop 
               playsinline 
               webkit-playsinline
               disablepictureinpicture
-              preload="auto">
+              preload="none">
               <source src="guava-card-video.mp4" type="video/mp4" />
-              <source src="is_ki_vedio_bana_kr_do_me_webs.mp4" type="video/mp4" />
-              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/JR/UY/GV/37115510/natures-pride-guava-fruit-drink-250x250.png" alt="Natures Pride Guava Fruit Drink" class="prod-img" />
             </video>
+            <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/JR/UY/GV/37115510/natures-pride-guava-fruit-drink-250x250.png" alt="Natures Pride Guava Fruit Drink" class="prod-img prod-fallback-img" loading="lazy" />
           </div>
           <div class="product-details">
             <h3 class="prod-title">Guava Fruit Drink</h3>
@@ -220,17 +213,15 @@
             <video 
               class="prod-video" 
               id="mixedProductVideo" 
-              autoplay 
               muted 
               loop 
               playsinline 
               webkit-playsinline
               disablepictureinpicture
-              preload="auto">
+              preload="none">
               <source src="mixed-card-video.mp4" type="video/mp4" />
-              <source src="is_ki_bhi_vedio_banao.mp4" type="video/mp4" />
-              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/IE/YG/VU/37115510/natures-pride-mixed-fruit-drink-250x250.png" alt="Natures Pride Mixed Fruit Drink" class="prod-img" />
             </video>
+            <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/IE/YG/VU/37115510/natures-pride-mixed-fruit-drink-250x250.png" alt="Natures Pride Mixed Fruit Drink" class="prod-img prod-fallback-img" loading="lazy" />
           </div>
           <div class="product-details">
             <h3 class="prod-title">Mixed Fruit Drink</h3>
