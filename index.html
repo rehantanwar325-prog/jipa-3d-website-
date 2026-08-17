@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JEPH Bev Pvt. Ltd. | Natures Pride Flavoured Fruit Drinks</title>
+  <meta name="description" content="JEPH Bev Pvt. Ltd., Jaipur — Manufacturer of Natures Pride premium fruit drinks (Coco Thunder, Mango, Guava, Mixed Fruit). Refreshing beverage manufacturing at Tagore Nagar, Ajmer Road." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <link rel="stylesheet" href="index.css" />
+
+  <!-- Three.js for 3D Particle Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <!-- GSAP + ScrollTrigger for Scroll Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+</head>
+<body class="light-theme">
+
+  <!-- Floating 3D Fruit Particles -->
+  <div class="floating-fruits-container" id="floatingFruits" aria-hidden="true"></div>
+
+  <!-- ================= HEADER / NAVBAR ================= -->
+  <header class="header" id="header">
+    <div class="container header-container">
+      <a href="#home" class="brand-logo" id="brandLogo">
+        <div class="logo-mark logo-fruit">
+          <i class="fa-solid fa-wine-glass"></i>
+          <span class="logo-glow"></span>
+        </div>
+        <div class="logo-text-group">
+          <span class="brand-name">NATURES <span class="brand-highlight">PRIDE</span></span>
+          <span class="brand-sub">JEPH BEV PVT. LTD. • JAIPUR</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li class="nav-item"><a href="#products" class="nav-link"><i class="fa-solid fa-bottle-droplet"></i> Fruit Drinks</a></li>
+          <li class="nav-item"><a href="#about" class="nav-link"><i class="fa-solid fa-building"></i> About Us</a></li>
+          <li class="nav-item"><a href="#process" class="nav-link"><i class="fa-solid fa-industry"></i> Manufacturing</a></li>
+          <li class="nav-item"><a href="#quality" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Quality</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link"><i class="fa-solid fa-location-dot"></i> Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Fruit%20Drinks" target="_blank" class="btn-action btn-whatsapp-header" id="headerWhatsappBtn">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>Order Wholesale</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= FULLSCREEN AUTOPLAY VIDEO HERO SECTION ================= -->
+  <section class="hero-fullscreen" id="home">
+    <div class="hero-video-bg-wrap">
+      <video 
+        class="fullscreen-bg-video" 
+        id="heroFullscreenVideo" 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        preload="auto">
+        <!-- 9:16 Portrait for Mobile & Vertical Screens -->
+        <source src="logoremover-1786882988011_AOz4B6BX.mp4" type="video/mp4" media="(max-width: 768px), (orientation: portrait)" />
+        <!-- 16:9 Landscape for Desktop & Widescreen Displays -->
+        <source src="logoremover_1786882988011.mp4" type="video/mp4" media="(min-width: 769px)" />
+        <!-- Default Fallback -->
+        <source src="logoremover_1786882988011.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- Subtle Vignettes -->
+      <div class="video-overlay-top"></div>
+      <div class="video-overlay-bottom"></div>
+    </div>
+
+    <!-- Transparent Center Stop / Play Button -->
+    <button class="hero-video-stop-btn" id="heroVideoStopBtn" aria-label="Stop or Play Video" title="Click to Stop / Play Video"></button>
+    
+    <!-- Momentary Status Flash Indicator -->
+    <div class="video-flash-indicator" id="videoFlashIndicator" aria-hidden="true">
+      <i class="fa-solid fa-pause" id="videoFlashIcon"></i>
+    </div>
+
+    <!-- Sleek Minimal Audio Toggle (Circle Glass) -->
+    <button class="hero-audio-mini-btn" id="heroAudioToggle" aria-label="Toggle Sound" title="Click to Mute / Unmute Audio">
+      <i class="fa-solid fa-volume-high" id="audioToggleIcon"></i>
+    </button>
+
+    <!-- Scroll Down Cue -->
+    <a href="#products" class="scroll-cue" aria-label="Scroll Down to Fruit Drinks">
+      <div class="cue-mouse">
+        <div class="cue-wheel"></div>
+      </div>
+      <span>Explore Fruit Drinks</span>
+    </a>
+  </section>
+
+  <!-- ================= PRODUCTS SECTION (FIRST SECTION AFTER HERO) ================= -->
+  <section class="section products-section" id="products">
+    <!-- 3D Particle Canvas Background -->
+    <canvas class="products-3d-canvas" id="products3dCanvas"></canvas>
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-wine-bottle"></i> OUR FLAVOURED DRINKS COLLECTION</span>
+        <h2 class="main-heading">Natures Pride <span class="title-gradient-fruit">Fruit Beverages</span></h2>
+        <p class="section-lead">Explore our complete range of refreshing fruit drinks crafted for retail shops, distributors, restaurants, parties, and everyday indulgence.</p>
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div class="products-grid" data-animate="stagger-up">
+
+        <!-- 1. Coco Thunder -->
+        <div class="product-card glass-panel flavour-coco" data-tilt data-animate-child>
+          <div class="product-badge-top badge-coco">🥥 Coconut Sensation</div>
+          <div class="product-image-container">
+            <video 
+              class="prod-video" 
+              id="cocoProductVideo" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              webkit-playsinline
+              disablepictureinpicture
+              preload="auto">
+              <source src="coco-card-video.mp4" type="video/mp4" />
+              <source src="logoremover_1786905709706.mp4" type="video/mp4" />
+              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/RS/SQ/CF/37115510/natures-pride-coco-thunder-250x250.png" alt="Natures Pride Coco Thunder" class="prod-img" />
+            </video>
+          </div>
+          <div class="product-details">
+            <h3 class="prod-title">Coco Thunder</h3>
+            <div class="prod-actions">
+              <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Coco%20Thunder%20cases" target="_blank" class="btn-prod-order btn-order-coco">
+                <i class="fa-brands fa-whatsapp"></i> Order Wholesale Cases
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Mango Fruit Drink -->
+        <div class="product-card glass-panel flavour-mango" data-tilt data-animate-child>
+          <div class="product-badge-top badge-mango">🥭 King of Fruits</div>
+          <div class="product-image-container">
+            <video 
+              class="prod-video" 
+              id="mangoProductVideo" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              webkit-playsinline
+              disablepictureinpicture
+              preload="auto">
+              <source src="mango-card-video.mp4" type="video/mp4" />
+              <source src="mujha_ak_vedio_bana_kr_do_is_k (online-video-cutter.com).mp4" type="video/mp4" />
+              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/AH/CH/WV/37115510/natures-pride-mango-fruit-drink-250x250.png" alt="Natures Pride Mango Fruit Drink" class="prod-img" />
+            </video>
+          </div>
+          <div class="product-details">
+            <h3 class="prod-title">Mango Fruit Drink</h3>
+            <div class="prod-actions">
+              <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Mango%20Fruit%20Drink%20cases" target="_blank" class="btn-prod-order btn-order-mango">
+                <i class="fa-brands fa-whatsapp"></i> Order Wholesale Cases
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Guava Fruit Drink (Featured in Hero Video) -->
+        <div class="product-card glass-panel flavour-guava featured-product" data-tilt data-animate-child>
+          <div class="product-badge-top badge-guava">🍈 Hero Video Flavour</div>
+          <div class="product-image-container">
+            <video 
+              class="prod-video" 
+              id="guavaProductVideo" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              webkit-playsinline
+              disablepictureinpicture
+              preload="auto">
+              <source src="guava-card-video.mp4" type="video/mp4" />
+              <source src="is_ki_vedio_bana_kr_do_me_webs.mp4" type="video/mp4" />
+              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/JR/UY/GV/37115510/natures-pride-guava-fruit-drink-250x250.png" alt="Natures Pride Guava Fruit Drink" class="prod-img" />
+            </video>
+          </div>
+          <div class="product-details">
+            <h3 class="prod-title">Guava Fruit Drink</h3>
+            <div class="prod-actions">
+              <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Guava%20Fruit%20Drink%20cases" target="_blank" class="btn-prod-order btn-featured-guava">
+                <i class="fa-brands fa-whatsapp"></i> Order Wholesale Cases
+              </a>
+              <button type="button" class="spec-tag-video-btn" id="openVideoModalBtn" title="Watch Full HD Promo with 9:16 & 16:9 Switcher">
+                <i class="fa-solid fa-play"></i> Watch HD Promo (9:16 / 16:9)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Mixed Fruit Drink -->
+        <div class="product-card glass-panel flavour-mixed" data-tilt data-animate-child>
+          <div class="product-badge-top badge-mixed">🍇 Multi-Fruit Blast</div>
+          <div class="product-image-container">
+            <video 
+              class="prod-video" 
+              id="mixedProductVideo" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              webkit-playsinline
+              disablepictureinpicture
+              preload="auto">
+              <source src="mixed-card-video.mp4" type="video/mp4" />
+              <source src="is_ki_bhi_vedio_banao.mp4" type="video/mp4" />
+              <img src="https://5.imimg.com/data5/SELLER/Default/2022/1/IE/YG/VU/37115510/natures-pride-mixed-fruit-drink-250x250.png" alt="Natures Pride Mixed Fruit Drink" class="prod-img" />
+            </video>
+          </div>
+          <div class="product-details">
+            <h3 class="prod-title">Mixed Fruit Drink</h3>
+            <div class="prod-actions">
+              <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Mixed%20Fruit%20Drink%20cases" target="_blank" class="btn-prod-order btn-order-mixed">
+                <i class="fa-brands fa-whatsapp"></i> Order Wholesale Cases
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT SECTION (REDESIGNED & COMPACT) ================= -->
+  <section class="section about-section" id="about">
+    <!-- Ambient Backdrop Lighting -->
+    <div class="ambient-glow glow-about-1"></div>
+    <div class="ambient-glow glow-about-2"></div>
+
+    <div class="container">
+      <!-- Section Header -->
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-industry"></i> ABOUT JEPH BEV PVT. LTD.</span>
+        <h2 class="main-heading">Crafting Exceptional <span class="title-gradient-fruit">Fruit Beverages</span></h2>
+        <p class="section-lead">
+          From our state-of-the-art manufacturing plant at <strong>Plot No. 36-37, Tagore Nagar, Ajmer Road, Jaipur</strong>, we blend nature's finest fruit extracts with automated, sterile bottling lines to deliver pure, refreshing delight in every sip.
+        </p>
+      </div>
+
+      <!-- Top Story & Feature Layout -->
+      <div class="about-modern-grid">
+        
+        <!-- Left: Brand Story & Heritage Card -->
+        <div class="about-hero-card glass-panel" data-tilt data-animate="fade-right">
+          <div class="card-glow-overlay"></div>
+          <div class="card-header-badge-row">
+            <div class="brand-pill"><i class="fa-solid fa-award"></i> Premier FMCG Manufacturer</div>
+            <div class="fssai-pill"><i class="fa-solid fa-certificate"></i> FSSAI Certified</div>
+          </div>
+
+          <h3 class="about-card-title">Pure Passion for <span class="title-gradient-fruit">Flavor & Freshness</span></h3>
+          <p class="about-card-desc">
+            JEPH Bev Pvt. Ltd. is Jaipur's trusted beverage manufacturing house. Under our flagship brand <strong>Natures Pride</strong>, we produce a delicious, high-quality range of flavoured fruit drinks designed to invigorate, refresh, and satisfy consumers across Rajasthan and beyond.
+          </p>
+
+          <!-- 3 Quality Pillars -->
+          <div class="about-pillars-grid">
+            <div class="pillar-box">
+              <div class="pillar-icon icon-guava-glow"><i class="fa-solid fa-leaf"></i></div>
+              <div class="pillar-info">
+                <h4>Authentic Taste</h4>
+                <p>Curated fruit pulp & extracts for real, uncompromised flavour.</p>
+              </div>
+            </div>
+
+            <div class="pillar-box">
+              <div class="pillar-icon icon-emerald-glow"><i class="fa-solid fa-shield-virus"></i></div>
+              <div class="pillar-info">
+                <h4>Cleanroom Bottling</h4>
+                <p>Fully automated, zero human-touch sterile bottling plant in Jaipur.</p>
+              </div>
+            </div>
+
+            <div class="pillar-box">
+              <div class="pillar-icon icon-mango-glow"><i class="fa-solid fa-truck-ramp-box"></i></div>
+              <div class="pillar-info">
+                <h4>Wholesale Distribution</h4>
+                <p>Swift case deliveries to retail shops, distributors, and event caterers.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Factory Location Tag -->
+          <div class="factory-location-tag">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Plant Address: Plot No. 36-37, Tagore Nagar, Ajmer Road, Jaipur, Rajasthan – 302021</span>
+          </div>
+        </div>
+
+        <!-- Right: 4 Flavour Showcase Grid -->
+        <div class="about-flavours-wrapper" data-animate="fade-left">
+          <div class="flavours-grid-header">
+            <span class="grid-title-sub"><i class="fa-solid fa-sparkles"></i> 4 SIGNATURE VARIANTS</span>
+            <h4>Natures Pride Fruit Lineup</h4>
+          </div>
+
+          <div class="about-flavours-grid">
+            
+            <!-- 1. Coco Thunder -->
+            <div class="flavour-feature-card f-coco-box glass-panel" data-tilt>
+              <div class="f-card-top">
+                <span class="f-emoji">🥥</span>
+                <span class="f-badge badge-coco-t">Coconut Sensation</span>
+              </div>
+              <h4>Coco Thunder</h4>
+              <p>Creamy tender coconut water sensation packed with natural stamina and instant hydration.</p>
+              <div class="f-card-footer">
+                <span class="f-tag"><i class="fa-solid fa-bolt"></i> Natural Energy</span>
+                <a href="#products" class="f-link-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+
+            <!-- 2. Mango Fruit Drink -->
+            <div class="flavour-feature-card f-mango-box glass-panel" data-tilt>
+              <div class="f-card-top">
+                <span class="f-emoji">🥭</span>
+                <span class="f-badge badge-mango-t">King of Fruits</span>
+              </div>
+              <h4>Mango Fruit Drink</h4>
+              <p>Rich, pulpy Alphonso-style mango drink with the luscious sweetness of ripe summer mangoes.</p>
+              <div class="f-card-footer">
+                <span class="f-tag"><i class="fa-solid fa-sun"></i> Rich & Pulpy</span>
+                <a href="#products" class="f-link-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+
+            <!-- 3. Guava Fruit Drink (Featured in Hero Video) -->
+            <div class="flavour-feature-card f-guava-box glass-panel" data-tilt>
+              <div class="f-card-top">
+                <span class="f-emoji">🍈</span>
+                <span class="f-badge badge-guava-t">Hero Video Flavour</span>
+              </div>
+              <h4>Guava Fruit Drink</h4>
+              <p>Fragrant pink guava delight with a sweet-tangy tropical zing as featured in our hero bottle video.</p>
+              <div class="f-card-footer">
+                <span class="f-tag"><i class="fa-solid fa-gem"></i> Pink Guava</span>
+                <a href="#products" class="f-link-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+
+            <!-- 4. Mixed Fruit Drink -->
+            <div class="flavour-feature-card f-mixed-box glass-panel" data-tilt>
+              <div class="f-card-top">
+                <span class="f-emoji">🍇</span>
+                <span class="f-badge badge-mixed-t">Multi-Fruit Blend</span>
+              </div>
+              <h4>Mixed Fruit Drink</h4>
+              <p>A multi-fruit cocktail punch blending 5 delicious fruit notes in every refreshing, thirst-quenching sip.</p>
+              <div class="f-card-footer">
+                <span class="f-tag"><i class="fa-solid fa-cubes-stacked"></i> 5+ Fruit Punch</span>
+                <a href="#products" class="f-link-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Animated Key Metric Stats Banner -->
+      <div class="about-stats-banner glass-panel" data-animate="fade-up">
+        <div class="stat-banner-item">
+          <div class="stat-banner-icon icon-emerald-glow"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="stat-banner-text">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="100">0</span><span class="stat-plus">%</span>
+            </div>
+            <span class="stat-label">Hygiene & Safety Tested</span>
+          </div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-banner-item">
+          <div class="stat-banner-icon icon-guava-glow"><i class="fa-solid fa-champagne-glasses"></i></div>
+          <div class="stat-banner-text">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="4">0</span><span class="stat-plus"> Drinks</span>
+            </div>
+            <span class="stat-label">Exotic Fruit Lineup</span>
+          </div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-banner-item">
+          <div class="stat-banner-icon icon-mango-glow"><i class="fa-solid fa-industry"></i></div>
+          <div class="stat-banner-text">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="50000">0</span><span class="stat-plus">+ L</span>
+            </div>
+            <span class="stat-label">Daily Bottling Capacity</span>
+          </div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-banner-item">
+          <div class="stat-banner-icon icon-coco-glow"><i class="fa-solid fa-store"></i></div>
+          <div class="stat-banner-text">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="1000">0</span><span class="stat-plus">+</span>
+            </div>
+            <span class="stat-label">Retail Outlets in Rajasthan</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MANUFACTURING PROCESS ================= -->
+  <section class="section process-section" id="process">
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-industry"></i> ADVANCED BOTTLING LINE</span>
+        <h2 class="main-heading">Our 5-Stage <span class="title-gradient-fruit">Manufacturing Journey</span></h2>
+        <p class="section-lead">From curated fruit extracts to automated, sterile packaging at our Tagore Nagar plant in Jaipur.</p>
+      </div>
+
+      <div class="process-flow-container">
+        <!-- Stage 1 -->
+        <div class="process-card glass-panel" data-3d-flip>
+          <div class="stage-num">01</div>
+          <div class="stage-icon-box icon-box-guava"><i class="fa-solid fa-lemon"></i></div>
+          <h4>Ingredient Selection & Quality Inspection</h4>
+          <p>Carefully selecting fruit extracts and safe natural ingredients checked by food testing standards.</p>
+          <div class="stage-pill">Premium Ingredients</div>
+        </div>
+
+        <div class="flow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+
+        <!-- Stage 2 -->
+        <div class="process-card glass-panel" data-3d-flip>
+          <div class="stage-num">02</div>
+          <div class="stage-icon-box icon-box-mango"><i class="fa-solid fa-blender"></i></div>
+          <h4>Precision Homogenisation & Blending</h4>
+          <p>High-shear blending tanks ensure smooth consistency, even pulp distribution, and rich flavour texture.</p>
+          <div class="stage-pill">Micro-Blending</div>
+        </div>
+
+        <div class="flow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+
+        <!-- Stage 3 -->
+        <div class="process-card glass-panel" data-3d-flip>
+          <div class="stage-num">03</div>
+          <div class="stage-icon-box icon-box-coco"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+          <h4>Pasteurisation & Thermal Sterilisation</h4>
+          <p>Controlled thermal processing eliminates microbial risk while locking in natural freshness and fruit vitamins.</p>
+          <div class="stage-pill">Food Safety</div>
+        </div>
+
+        <div class="flow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+
+        <!-- Stage 4 -->
+        <div class="process-card glass-panel" data-3d-flip>
+          <div class="stage-num">04</div>
+          <div class="stage-icon-box icon-box-mixed"><i class="fa-solid fa-vial-circle-check"></i></div>
+          <h4>Sensory & Lab Quality Testing</h4>
+          <p>Every batch is checked for Brix (sweetness), pH balance, colour accuracy, and sensory taste approval.</p>
+          <div class="stage-pill">Batch Testing</div>
+        </div>
+
+        <div class="flow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+
+        <!-- Stage 5 -->
+        <div class="process-card glass-panel" data-3d-flip>
+          <div class="stage-num">05</div>
+          <div class="stage-icon-box icon-box-guava"><i class="fa-solid fa-bottle-water"></i></div>
+          <h4>Cleanroom Automated Bottling & Capping</h4>
+          <p>Bottles are rinsed, filled, hermetically capped, and batch-coded in a sterile cleanroom without human touch.</p>
+          <div class="stage-pill">Airtight Sealing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUALITY COMPARISON SECTION ================= -->
+  <section class="section purity-section" id="quality">
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-shield-halved"></i> BEVERAGE BENCHMARK</span>
+        <h2 class="main-heading">Why Choose <span class="title-gradient-fruit">Natures Pride</span></h2>
+        <p class="section-lead">See how our hygienic, certified fruit drinks outperform ordinary unbranded local beverages.</p>
+      </div>
+
+      <div class="comparison-table-wrapper glass-panel" data-animate="fade-up">
+        <table class="purity-table">
+          <thead>
+            <tr>
+              <th>Quality Parameter</th>
+              <th>Local Unbranded Drinks</th>
+              <th>Ordinary Synthetic Drinks</th>
+              <th class="highlight-col-fruit">Natures Pride Fruit Drinks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Taste & Flavour Experience</strong></td>
+              <td>Synthetic / Artificial</td>
+              <td>Chemical Aftertaste</td>
+              <td class="highlight-col-fruit"><span class="badge-good">Authentic, Fruity & Refreshing</span></td>
+            </tr>
+            <tr>
+              <td><strong>Manufacturing Facility</strong></td>
+              <td>Unverified / Roadside</td>
+              <td>Standard Plant</td>
+              <td class="highlight-col-fruit"><span class="badge-good">Modern Cleanroom Facility in Jaipur</span></td>
+            </tr>
+            <tr>
+              <td><strong>Food Safety & Licensing</strong></td>
+              <td><span class="badge-bad">Unlicensed / High Risk</span></td>
+              <td>Basic</td>
+              <td class="highlight-col-fruit"><span class="badge-good">FSSAI Certified & Quality Tested</span></td>
+            </tr>
+            <tr>
+              <td><strong>Packaging & Tamper-Proofing</strong></td>
+              <td>Loose / Weak Caps</td>
+              <td>Standard Plastic</td>
+              <td class="highlight-col-fruit"><span class="badge-good">Airtight Hermetic Seal & Virgin PET</span></td>
+            </tr>
+            <tr>
+              <td><strong>Flavour Variety</strong></td>
+              <td>Limited</td>
+              <td>Generic Cola/Orange</td>
+              <td class="highlight-col-fruit"><span class="badge-good">Coco Thunder, Mango, Guava, Mix</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DISTRIBUTION & CONTACT ================= -->
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-truck-fast"></i> DEALERSHIP & DISTRIBUTION</span>
+        <h2 class="main-heading">Become a <span class="title-gradient-fruit">Distributor / Partner</span></h2>
+        <p class="section-lead">Inquire for distributorship, retail wholesale supply, or event catering across Jaipur and Rajasthan.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Info Cards -->
+        <div class="contact-info-column">
+          <!-- Factory Location -->
+          <div class="info-card glass-panel">
+            <div class="info-icon icon-guava-c"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="info-body">
+              <h4>Manufacturing Plant & Office</h4>
+              <p>Plot No. 36-37, Tagore Nagar, Ajmer Road, Jaipur, Rajasthan – 302021</p>
+              <span class="info-note"><i class="fa-solid fa-industry"></i> Modern Beverage Bottling Plant</span>
+            </div>
+          </div>
+
+          <!-- Phone & WhatsApp -->
+          <div class="info-card glass-panel">
+            <div class="info-icon icon-mango-c"><i class="fa-solid fa-phone-volume"></i></div>
+            <div class="info-body">
+              <h4>Direct Phone & WhatsApp</h4>
+              <p>Contact our sales & dealership desk for wholesale price lists:</p>
+              <div class="direct-action-buttons">
+                <a href="tel:+919876543210" class="btn-direct btn-phone">
+                  <i class="fa-solid fa-phone"></i> +91 XXXXX XXXXX
+                </a>
+                <a href="https://wa.me/919876543210?text=Hello%20JEPH%20Bev,%20I%20want%20to%20inquire%20for%20Natures%20Pride%20distributorship/bulk%20supply" target="_blank" class="btn-direct btn-wa">
+                  <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Hours -->
+          <div class="info-card glass-panel">
+            <div class="info-icon icon-coco-c"><i class="fa-solid fa-clock"></i></div>
+            <div class="info-body">
+              <h4>Working Hours</h4>
+              <p>Monday to Saturday: 8:30 AM – 7:30 PM</p>
+              <p>Sunday: Dispatch & Scheduled Delivery Support</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inquiry Form -->
+        <div class="contact-form-column">
+          <div class="inquiry-form-card glass-panel">
+            <div class="form-header">
+              <h3>Wholesale & Dealership Inquiry</h3>
+              <p>Fill out the form below and our Jaipur team will respond quickly.</p>
+            </div>
+
+            <form id="inquiryForm" class="inquiry-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fullName">Your Full Name *</label>
+                  <input type="text" id="fullName" class="form-control" placeholder="e.g. Rajesh Kumar" required />
+                </div>
+                <div class="form-group">
+                  <label for="phoneNum">Phone / WhatsApp Number *</label>
+                  <input type="tel" id="phoneNum" class="form-control" placeholder="e.g. +91 98765 43210" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="inquiryType">Inquiry Type</label>
+                  <select id="inquiryType" class="form-control">
+                    <option value="Dealership">Distributorship / Dealership</option>
+                    <option value="Retail Wholesale">Retail Shop Wholesale</option>
+                    <option value="Events">Wedding / Event Bulk Supply</option>
+                    <option value="General">General Inquiry</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="productInterest">Flavour Preference</label>
+                  <select id="productInterest" class="form-control">
+                    <option value="All Natures Pride Flavours">All Flavours (Coco, Mango, Guava, Mix)</option>
+                    <option value="Coco Thunder">Coco Thunder (Coconut Drink)</option>
+                    <option value="Mango Drink">Mango Fruit Drink</option>
+                    <option value="Guava Drink">Guava Fruit Drink (Video Featured)</option>
+                    <option value="Mixed Fruit Drink">Mixed Fruit Drink</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="userMessage">Message / Delivery Location in Jaipur or Rajasthan</label>
+                <textarea id="userMessage" rows="3" class="form-control" placeholder="Tell us your quantity requirements and delivery location..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit-form btn-fruit-glow" id="submitFormBtn">
+                <i class="fa-solid fa-paper-plane"></i> Send Inquiry Now
+              </button>
+
+              <div class="form-feedback" id="formFeedback"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embedded Google Map -->
+      <div class="map-embed-container glass-panel">
+        <div class="map-header">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span>Plant Location: Tagore Nagar, Ajmer Road, Jaipur, Rajasthan</span>
+        </div>
+        <iframe 
+          title="JEPH Bev Location Map"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14234.33125203306!2d75.7410292850989!3d26.88492067756184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db45bb627b0b7%3A0xa64627b7cfa6a005!2sTagore%20Nagar%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+          width="100%" 
+          height="320" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <div class="brand-logo">
+            <div class="logo-mark logo-fruit"><i class="fa-solid fa-wine-glass"></i></div>
+            <div class="logo-text-group">
+              <span class="brand-name">NATURES <span class="brand-highlight">PRIDE</span></span>
+              <span class="brand-sub">JEPH BEV PVT. LTD.</span>
+            </div>
+          </div>
+          <p class="footer-about-text">
+            Premier fruit beverage manufacturer based in Jaipur, Rajasthan. Delivering exotic flavours, hygiene, and refreshing drinks crafted for every occasion.
+          </p>
+          <div class="footer-social-links">
+            <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-btn" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <h4>Flavour Range</h4>
+          <ul>
+            <li><a href="#products">Coco Thunder (Coconut)</a></li>
+            <li><a href="#products">Mango Fruit Drink</a></li>
+            <li><a href="#products">Guava Fruit Drink</a></li>
+            <li><a href="#products">Mixed Fruit Drink</a></li>
+            <li><a href="#products">Wholesale Cases</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4>Quick Navigation</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Natures Pride</a></li>
+            <li><a href="#products">Product Catalogue</a></li>
+            <li><a href="#process">Manufacturing Process</a></li>
+            <li><a href="#quality">Quality Benchmark</a></li>
+            <li><a href="#contact">Dealership / Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact-col">
+          <h4>Factory Address</h4>
+          <p><i class="fa-solid fa-location-dot"></i> Plot No. 36-37, Tagore Nagar, Ajmer Road, Jaipur, Rajasthan – 302021</p>
+          <p><i class="fa-solid fa-phone"></i> +91 XXXXX XXXXX</p>
+          <p><i class="fa-solid fa-envelope"></i> info@jephbev.com</p>
+          <div class="fssai-badge-footer">
+            <i class="fa-solid fa-certificate"></i> FSSAI Certified Quality
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 JEPH Bev Pvt. Ltd. (Natures Pride). All rights reserved.</p>
+        <p class="footer-credit">Manufactured with Pride in Jaipur, Rajasthan 🇮🇳</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Sticky Action Buttons -->
+  <div class="floating-quick-bar">
+    <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Fruit%20Drinks" target="_blank" class="float-btn float-wa" title="Chat on WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="float-tooltip">WhatsApp Order</span>
+    </a>
+    <a href="tel:+919876543210" class="float-btn float-call" title="Call Now">
+      <i class="fa-solid fa-phone"></i>
+      <span class="float-tooltip">Call Sales</span>
+    </a>
+    <button class="float-btn float-top" id="backToTopBtn" title="Back to Top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <!-- ================= HD PROMO VIDEO MODAL (9:16 / 16:9 SWITCHER) ================= -->
+  <div class="video-modal-backdrop" id="videoModalBackdrop" aria-hidden="true">
+    <div class="video-modal-dialog glass-panel" role="dialog" aria-label="Natures Pride Promo Video">
+      
+      <!-- Modal Top Bar -->
+      <div class="video-modal-header">
+        <div class="modal-title-group">
+          <span class="modal-badge"><i class="fa-solid fa-play"></i> OFFICIAL PROMO</span>
+          <h4>Natures Pride Guava Fruit Drink</h4>
+        </div>
+
+        <!-- Aspect Ratio Switcher Controls -->
+        <div class="modal-ratio-switch">
+          <button type="button" class="ratio-btn" data-ratio="9-16" id="ratioBtn916" title="Switch to 9:16 Mobile Reel Aspect Ratio">
+            <i class="fa-solid fa-mobile-screen"></i> <span>9:16 Reel</span>
+          </button>
+          <button type="button" class="ratio-btn active" data-ratio="16-9" id="ratioBtn169" title="Switch to 16:9 Landscape Aspect Ratio">
+            <i class="fa-solid fa-display"></i> <span>16:9 HD</span>
+          </button>
+        </div>
+
+        <!-- Close Button -->
+        <button type="button" class="modal-close-btn" id="videoModalCloseBtn" aria-label="Close Video Player">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Video Player Frame -->
+      <div class="video-modal-body" id="videoModalBody">
+        <div class="video-modal-player-wrap ratio-16-9" id="videoModalPlayerWrap">
+          <video 
+            id="modalVideoPlayer" 
+            playsinline 
+            controls 
+            preload="auto">
+            <source id="modalVideoSource" src="logoremover_1786882988011.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="video-modal-footer">
+        <div class="modal-footer-info">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Auto-detects screen ratio. You can toggle between <strong>9:16 Mobile Reel</strong> and <strong>16:9 Widescreen HD</strong> anytime.</span>
+        </div>
+        <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20watched%20the%20promo%20video%20and%20want%20to%20order%20Natures%20Pride%20Guava%20Fruit%20Drinks" target="_blank" class="btn-action btn-modal-order">
+          <i class="fa-brands fa-whatsapp"></i> Order This Flavour
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
