@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ================= 2. FULLSCREEN HERO VIDEO & RESPONSIVE RATIO CONTROLLER =================
+  // ================= 2. FULLSCREEN HERO VIDEO CONTROLLER =================
   const bgVideo = document.getElementById('heroFullscreenVideo');
   const heroSection = document.getElementById('home');
   const heroVideoStopBtn = document.getElementById('heroVideoStopBtn');
@@ -89,47 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const videoFlashIndicator = document.getElementById('videoFlashIndicator');
   const videoFlashIcon = document.getElementById('videoFlashIcon');
 
-  // Video Assets (16:9 Landscape vs 9:16 Portrait Reel)
-  const VIDEO_16_9 = 'logoremover_1786882988011.mp4';
-  const VIDEO_9_16 = 'logoremover-1786882988011_AOz4B6BX.mp4';
-
   if (bgVideo) {
     let isManuallyPaused = false;
     let flashTimeout = null;
-    let currentLoadedFile = '';
 
-    // Determine target video file based on viewport ratio & screen width
-    const getTargetHeroVideo = () => {
-      const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-      const isMobileWidth = window.innerWidth <= 768;
-      const isTallRatio = (window.innerHeight / window.innerWidth) > 1.15;
-      return (isPortrait || isMobileWidth || isTallRatio) ? VIDEO_9_16 : VIDEO_16_9;
-    };
+    bgVideo.muted = true;
+    bgVideo.defaultMuted = true;
+    bgVideo.playsInline = true;
+    bgVideo.loop = true;
 
-    // Responsive Source Switcher
-    const syncHeroVideoSource = (forcePlay = false) => {
-      const targetVideo = getTargetHeroVideo();
-      if (currentLoadedFile !== targetVideo) {
-        currentLoadedFile = targetVideo;
-        const wasPaused = bgVideo.paused;
-        const currentTime = bgVideo.currentTime || 0;
-        const isMuted = bgVideo.muted;
-
-        bgVideo.src = targetVideo;
-        bgVideo.muted = isMuted;
-        bgVideo.load();
-        
-        if (currentTime > 0) {
-          bgVideo.currentTime = currentTime;
-        }
-
-        if (forcePlay || (!wasPaused && !isManuallyPaused)) {
-          bgVideo.play().catch(() => {});
-        }
-      }
-    };
-
-    // Helper: flash state icon momentarily on click for smooth visual feedback
+    // Helper: flash state icon momentarily on click
     const flashVideoStatus = (isPaused) => {
       if (!videoFlashIndicator || !videoFlashIcon) return;
       videoFlashIcon.className = isPaused ? 'fa-solid fa-pause' : 'fa-solid fa-play';
@@ -152,8 +121,37 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // Initial source sync & autoplay
-    syncHeroVideoSource(true);
+    const safePlayHeroVideo = () => {
+      if (isManuallyPaused) return;
+      bgVideo.muted = true;
+      const playPromise = bgVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Retry on first touch / scroll if initially restricted
+          const retryPlay = () => {
+            if (!isManuallyPaused) {
+              bgVideo.muted = true;
+              bgVideo.play().catch(() => {});
+            }
+          };
+          ['touchstart', 'click', 'scroll'].forEach(evt => {
+            window.addEventListener(evt, retryPlay, { once: true, passive: true });
+          });
+        });
+      }
+    };
+
+    // Initial play setup
+    updateAudioButton();
+    safePlayHeroVideo();
+    bgVideo.addEventListener('loadeddata', safePlayHeroVideo);
+    bgVideo.addEventListener('canplay', safePlayHeroVideo);
+
+    // Auto-loop failsafe
+    bgVideo.addEventListener('ended', () => {
+      bgVideo.currentTime = 0;
+      safePlayHeroVideo();
+    });
 
     // Toggle video play / stop
     const toggleVideoPlayback = () => {
@@ -162,19 +160,12 @@ document.addEventListener('DOMContentLoaded', () => {
         isManuallyPaused = true;
         flashVideoStatus(true);
       } else {
-        bgVideo.muted = false;
-        bgVideo.volume = 1.0;
-        updateAudioButton();
-        bgVideo.play().then(() => {
-          isManuallyPaused = false;
-          flashVideoStatus(false);
-        }).catch((err) => {
-          console.log('Video play error:', err);
-        });
+        isManuallyPaused = false;
+        safePlayHeroVideo();
+        flashVideoStatus(false);
       }
     };
 
-    // Transparent Stop / Play Button in Center
     if (heroVideoStopBtn) {
       heroVideoStopBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -182,14 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Audio Toggle Button Click
+    // Audio Toggle Button Click (Only place where audio is unmuted)
     if (heroAudioToggle) {
       heroAudioToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         if (bgVideo.muted) {
           bgVideo.muted = false;
           bgVideo.volume = 1.0;
-          if (bgVideo.paused) bgVideo.play().catch(() => {});
+          if (bgVideo.paused && !isManuallyPaused) {
+            bgVideo.play().catch(() => {});
+          }
         } else {
           bgVideo.muted = true;
         }
@@ -197,72 +190,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Auto-Unmute on first user interaction anywhere on the page
-    const autoUnmuteOnFirstInteraction = () => {
-      if (bgVideo.muted) {
-        bgVideo.muted = false;
-        bgVideo.volume = 1.0;
-        updateAudioButton();
-      }
-    };
-
-    ['click', 'touchstart', 'keydown'].forEach(evt => {
-      window.addEventListener(evt, autoUnmuteOnFirstInteraction, { once: true, passive: true });
-    });
-
-    // Ensure autoplay starts immediately (muted per browser requirement)
-    bgVideo.muted = true;
-    updateAudioButton();
-    bgVideo.play().then(() => {
-      // Try to un-mute immediately if browser permissions allow
-      bgVideo.muted = false;
-      updateAudioButton();
-    }).catch(() => {
-      bgVideo.muted = true;
-      updateAudioButton();
-      bgVideo.play().catch(err => {
-        console.log('Autoplay fallback:', err);
-      });
-    });
-
-    // Scroll Handler: AS SOON AS USER SCROLLS -> STOP THE VIDEO IMMEDIATELY
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-
-      if (scrollY > 15) {
-        // Scrolled down -> STOP VIDEO IMMEDIATELY
-        if (!bgVideo.paused) {
-          bgVideo.pause();
-        }
-      } else if (scrollY <= 5 && !isManuallyPaused) {
-        // Returned to top -> resume video smoothly if user didn't explicitly pause
-        if (bgVideo.paused) {
-          bgVideo.play().catch(() => {});
-        }
-      }
-    }, { passive: true });
-
-    // Wheel event for instant detection on scroll initiation
-    window.addEventListener('wheel', (e) => {
-      if (e.deltaY > 0 && !bgVideo.paused) {
-        bgVideo.pause();
-      }
-    }, { passive: true });
-
-    // IntersectionObserver for viewport exit
+    // Pause only when hero section is completely scrolled out of view
     if (heroSection && 'IntersectionObserver' in window) {
       const heroObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (!entry.isIntersecting || entry.intersectionRatio < 0.6) {
-            // When hero leaves viewport -> STOP VIDEO
+          if (entry.isIntersecting) {
+            if (!isManuallyPaused) {
+              safePlayHeroVideo();
+            }
+          } else {
             if (!bgVideo.paused) {
               bgVideo.pause();
             }
           }
         });
-      }, {
-        threshold: [0, 0.3, 0.6, 0.9, 1.0]
-      });
+      }, { threshold: 0.15 });
 
       heroObserver.observe(heroSection);
     }
@@ -271,16 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && !bgVideo.paused) {
         bgVideo.pause();
+      } else if (!document.hidden && !isManuallyPaused) {
+        safePlayHeroVideo();
       }
-    });
-
-    // Resize / Orientation change: Switch video ratio intelligently
-    let resizeTimer = null;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        syncHeroVideoSource();
-      }, 150);
     });
 
     if (window.screen && window.screen.orientation) {
