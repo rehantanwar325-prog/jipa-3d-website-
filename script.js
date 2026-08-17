@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroVideoStopBtn = document.getElementById('heroVideoStopBtn');
   const heroAudioToggle = document.getElementById('heroAudioToggle');
   const audioToggleIcon = document.getElementById('audioToggleIcon');
+  const audioToggleLabel = document.getElementById('audioToggleLabel');
   const videoFlashIndicator = document.getElementById('videoFlashIndicator');
   const videoFlashIcon = document.getElementById('videoFlashIcon');
 
@@ -111,32 +112,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper to update Audio button state
     const updateAudioButton = () => {
-      if (!heroAudioToggle || !audioToggleIcon) return;
+      if (!heroAudioToggle) return;
       if (bgVideo.muted) {
-        audioToggleIcon.className = 'fa-solid fa-volume-xmark';
-        heroAudioToggle.classList.add('muted');
+        if (audioToggleIcon) audioToggleIcon.className = 'fa-solid fa-volume-xmark';
+        if (audioToggleLabel) audioToggleLabel.textContent = 'Tap for Sound';
+        heroAudioToggle.classList.remove('active');
       } else {
-        audioToggleIcon.className = 'fa-solid fa-volume-high';
-        heroAudioToggle.classList.remove('muted');
+        if (audioToggleIcon) audioToggleIcon.className = 'fa-solid fa-volume-high';
+        if (audioToggleLabel) audioToggleLabel.textContent = 'Sound Playing';
+        heroAudioToggle.classList.add('active');
       }
+    };
+
+    const unmuteAudio = () => {
+      bgVideo.muted = false;
+      bgVideo.volume = 1.0;
+      updateAudioButton();
+      if (bgVideo.paused && !isManuallyPaused) {
+        bgVideo.play().catch(() => {});
+      }
+    };
+
+    const muteAudio = () => {
+      bgVideo.muted = true;
+      updateAudioButton();
     };
 
     const safePlayHeroVideo = () => {
       if (isManuallyPaused) return;
-      bgVideo.muted = true;
       const playPromise = bgVideo.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Retry on first touch / scroll if initially restricted
-          const retryPlay = () => {
-            if (!isManuallyPaused) {
-              bgVideo.muted = true;
-              bgVideo.play().catch(() => {});
-            }
-          };
-          ['touchstart', 'click', 'scroll'].forEach(evt => {
-            window.addEventListener(evt, retryPlay, { once: true, passive: true });
-          });
+          // If unmuted autoplay blocked, fallback to muted autoplay
+          bgVideo.muted = true;
+          updateAudioButton();
+          bgVideo.play().catch(() => {});
         });
       }
     };
@@ -152,6 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
       bgVideo.currentTime = 0;
       safePlayHeroVideo();
     });
+
+    // Auto-unmute on first user interaction anywhere in hero
+    const tryUnmuteOnInteraction = () => {
+      if (bgVideo.muted) {
+        unmuteAudio();
+      }
+    };
+    if (heroSection) {
+      heroSection.addEventListener('click', tryUnmuteOnInteraction, { once: true });
+    }
 
     // Toggle video play / stop
     const toggleVideoPlayback = () => {
@@ -173,20 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Audio Toggle Button Click (Only place where audio is unmuted)
+    // Audio Toggle Button Click
     if (heroAudioToggle) {
       heroAudioToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         if (bgVideo.muted) {
-          bgVideo.muted = false;
-          bgVideo.volume = 1.0;
-          if (bgVideo.paused && !isManuallyPaused) {
-            bgVideo.play().catch(() => {});
-          }
+          unmuteAudio();
         } else {
-          bgVideo.muted = true;
+          muteAudio();
         }
-        updateAudioButton();
       });
     }
 
