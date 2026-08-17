@@ -13,21 +13,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.nav-link');
   const backToTopBtn = document.getElementById('backToTopBtn');
 
+  let lastScrollY = window.scrollY;
+
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
 
     // Header glass background
-    if (scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
+    if (header) {
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
 
-    // Back to top button
-    if (scrollY > 400) {
-      backToTopBtn.classList.add('visible');
-    } else {
-      backToTopBtn.classList.remove('visible');
+      // Smart Auto-Hide Header on Scroll Down, Show on Scroll Up
+      if (navMenu && navMenu.classList.contains('open')) {
+        header.classList.remove('header-hidden');
+      } else if (scrollY > 120 && scrollY > lastScrollY + 6) {
+        // Scrolling down -> hide navbar so it never covers form or section headings
+        header.classList.add('header-hidden');
+      } else if (scrollY < lastScrollY - 6 || scrollY <= 80) {
+        // Scrolling up -> instantly reveal navbar
+        header.classList.remove('header-hidden');
+      }
+    }
+    lastScrollY = scrollY;
+
+    // Back to top button (if present)
+    if (backToTopBtn) {
+      if (scrollY > 400) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
     }
 
     // Active Section Tracking
