@@ -14,6 +14,9 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
+  <!-- Preload Critical Hero Video Poster for Instant 0-second Display -->
+  <link rel="preload" as="image" href="hero-poster.webp" type="image/webp" fetchpriority="high" />
+
   <link rel="stylesheet" href="index.css" />
 
   <!-- Three.js for 3D Particle Background -->
@@ -74,13 +77,15 @@
         id="heroFullscreenVideo" 
         autoplay 
         muted 
+        defaultMuted
         loop 
         playsinline
         webkit-playsinline
         x5-playsinline
         disablepictureinpicture
         preload="auto"
-        src="logoremover_1786882988011.mp4">
+        poster="hero-poster.webp">
+        <source src="logoremover-1786882988011_AOz4B6BX.mp4" media="(max-width: 768px)" type="video/mp4" />
         <source src="logoremover_1786882988011.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -89,6 +94,31 @@
       <div class="video-overlay-top"></div>
       <div class="video-overlay-bottom"></div>
     </div>
+
+    <!-- Instant 0ms Inline Playback Script (Triggers before heavy JS libraries) -->
+    <script>
+      (function() {
+        var v = document.getElementById('heroFullscreenVideo');
+        if (v) {
+          v.muted = true;
+          v.defaultMuted = true;
+          if (window.innerWidth <= 768) {
+            v.poster = 'hero-poster-mobile.webp';
+          }
+          var p = v.play();
+          if (p !== undefined) {
+            p.catch(function() {
+              var unlock = function() {
+                v.play().catch(function(){});
+              };
+              ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'].forEach(function(e) {
+                window.addEventListener(e, unlock, { passive: true, once: true });
+              });
+            });
+          }
+        }
+      })();
+    </script>
 
     <!-- Transparent Center Stop / Play Button -->
     <button class="hero-video-stop-btn" id="heroVideoStopBtn" aria-label="Stop or Play Video" title="Click to Stop / Play Video"></button>
@@ -132,16 +162,14 @@
             <video 
               class="prod-video" 
               id="cocoProductVideo" 
-              autoplay
               muted 
               loop 
               playsinline 
               webkit-playsinline
               x5-playsinline
               disablepictureinpicture
-              preload="metadata"
-              poster="https://5.imimg.com/data5/SELLER/Default/2022/1/RS/SQ/CF/37115510/natures-pride-coco-thunder-250x250.png"
-              src="coco-card-video.mp4">
+              preload="none"
+              poster="coco-poster.webp">
               <source src="coco-card-video.mp4" type="video/mp4" />
             </video>
           </div>
@@ -162,16 +190,14 @@
             <video 
               class="prod-video" 
               id="mangoProductVideo" 
-              autoplay
               muted 
               loop 
               playsinline 
               webkit-playsinline
               x5-playsinline
               disablepictureinpicture
-              preload="metadata"
-              poster="https://5.imimg.com/data5/SELLER/Default/2022/1/AH/CH/WV/37115510/natures-pride-mango-fruit-drink-250x250.png"
-              src="mango-card-video.mp4">
+              preload="none"
+              poster="mango-poster.webp">
               <source src="mango-card-video.mp4" type="video/mp4" />
             </video>
           </div>
@@ -192,16 +218,14 @@
             <video 
               class="prod-video" 
               id="guavaProductVideo" 
-              autoplay
               muted 
               loop 
               playsinline 
               webkit-playsinline
               x5-playsinline
               disablepictureinpicture
-              preload="metadata"
-              poster="https://5.imimg.com/data5/SELLER/Default/2022/1/JR/UY/GV/37115510/natures-pride-guava-fruit-drink-250x250.png"
-              src="guava-card-video.mp4">
+              preload="none"
+              poster="guava-poster.webp">
               <source src="guava-card-video.mp4" type="video/mp4" />
             </video>
           </div>
@@ -222,16 +246,14 @@
             <video 
               class="prod-video" 
               id="mixedProductVideo" 
-              autoplay
               muted 
               loop 
               playsinline 
               webkit-playsinline
               x5-playsinline
               disablepictureinpicture
-              preload="metadata"
-              poster="https://5.imimg.com/data5/SELLER/Default/2022/1/IE/YG/VU/37115510/natures-pride-mixed-fruit-drink-250x250.png"
-              src="mixed-card-video.mp4">
+              preload="none"
+              poster="mixed-poster.webp">
               <source src="mixed-card-video.mp4" type="video/mp4" />
             </video>
           </div>
@@ -791,7 +813,7 @@
             id="modalVideoPlayer" 
             playsinline 
             controls 
-            preload="auto">
+            preload="none">
             <source id="modalVideoSource" src="logoremover_1786882988011.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>

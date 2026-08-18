@@ -92,74 +92,79 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ================= 2. BULLETPROOF AUTOPLAY VIDEO ENGINE (HERO & PRODUCTS) =================
-  const allVideos = document.querySelectorAll('video');
+  // ================= 2. BULLETPROOF INSTANT AUTOPLAY VIDEO ENGINE =================
+  const bgVideo = document.getElementById('heroFullscreenVideo');
+  const prodVideos = document.querySelectorAll('.prod-video');
 
-  // Configure every video element for guaranteed mobile autoplay
-  allVideos.forEach(vid => {
-    vid.muted = true;
-    vid.defaultMuted = true;
-    vid.playsInline = true;
-    vid.setAttribute('playsinline', '');
-    vid.setAttribute('webkit-playsinline', '');
-    vid.setAttribute('x5-playsinline', '');
-    vid.setAttribute('muted', '');
-  });
-
+  // Helper to reliably trigger video playback
   const tryPlayVideo = (vid) => {
     if (!vid) return;
     vid.muted = true;
+    vid.defaultMuted = true;
     const playPromise = vid.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Autoplay policy fallback: unlock on first touch/scroll
+        // Fallback handled via interaction listeners
       });
     }
   };
 
-  // Play all videos initially
-  allVideos.forEach(tryPlayVideo);
+  // 1. Hero Video: Instant guaranteed mobile autoplay (0-second delay)
+  if (bgVideo) {
+    bgVideo.muted = true;
+    bgVideo.defaultMuted = true;
+    bgVideo.playsInline = true;
+    bgVideo.setAttribute('playsinline', '');
+    bgVideo.setAttribute('webkit-playsinline', '');
+    bgVideo.setAttribute('x5-playsinline', '');
+    bgVideo.setAttribute('muted', '');
 
-  // Global user interaction listener to unlock any blocked videos on mobile
-  const unlockAllVideos = () => {
-    allVideos.forEach(vid => {
-      if (vid.paused && vid.id !== 'modalVideoPlayer') {
-        tryPlayVideo(vid);
+    tryPlayVideo(bgVideo);
+
+    // Global user interaction listener to immediately unlock hero video if blocked by browser policy
+    const unlockHeroVideo = () => {
+      if (bgVideo && bgVideo.paused && !bgVideo.dataset.userPaused) {
+        tryPlayVideo(bgVideo);
       }
+    };
+
+    ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'].forEach(evt => {
+      window.addEventListener(evt, unlockHeroVideo, { once: true, passive: true });
     });
-  };
+  }
 
-  ['touchstart', 'touchend', 'click', 'scroll'].forEach(evt => {
-    window.addEventListener(evt, unlockAllVideos, { once: true, passive: true });
-  });
-
-  // IntersectionObserver to pause videos when out of view (saves battery/GPU)
+  // 2. Product Card Videos: Lazy Load & Play ONLY when scrolled into view (saves 10MB+ startup bandwidth)
   if ('IntersectionObserver' in window) {
-    const videoObserver = new IntersectionObserver((entries) => {
+    const prodObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const vid = entry.target;
         if (entry.isIntersecting) {
-          if (vid.paused && vid.id !== 'modalVideoPlayer') {
-            tryPlayVideo(vid);
-          }
+          tryPlayVideo(vid);
         } else {
-          if (!vid.paused && vid.id !== 'modalVideoPlayer') {
+          if (!vid.paused) {
             vid.pause();
           }
         }
       });
-    }, { threshold: 0.05, rootMargin: '200px' });
+    }, { threshold: 0.1, rootMargin: '150px' });
 
-    allVideos.forEach(vid => {
-      if (vid.id !== 'modalVideoPlayer') {
-        videoObserver.observe(vid);
-      }
+    prodVideos.forEach(vid => {
+      vid.muted = true;
+      vid.defaultMuted = true;
+      vid.playsInline = true;
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
+      vid.setAttribute('x5-playsinline', '');
+      vid.setAttribute('muted', '');
+      prodObserver.observe(vid);
     });
+  } else {
+    // Fallback for older browsers without IntersectionObserver
+    prodVideos.forEach(tryPlayVideo);
   }
 
 
   // ================= 3. HERO VIDEO CONTROLS (STOP/PLAY & SOUND) =================
-  const bgVideo = document.getElementById('heroFullscreenVideo');
   const heroSection = document.getElementById('home');
   const heroVideoStopBtn = document.getElementById('heroVideoStopBtn');
   const heroAudioToggle = document.getElementById('heroAudioToggle');
@@ -228,9 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!bgVideo.paused) {
           bgVideo.pause();
           isManuallyPaused = true;
+          bgVideo.dataset.userPaused = 'true';
           flashVideoStatus(true);
         } else {
           isManuallyPaused = false;
+          delete bgVideo.dataset.userPaused;
           tryPlayVideo(bgVideo);
           flashVideoStatus(false);
         }
