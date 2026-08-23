@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jipa-3d-website.vercel.app/sitemap.xml

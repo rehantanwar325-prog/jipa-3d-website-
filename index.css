@@ -3029,4 +3029,293 @@ section[id] {
     animation: none !important;
     display: none;
   }
+
+  .marquee-track,
+  .wa-pulse-ring {
+    animation: none !important;
+  }
+}
+
+/* ================= HERO PROMO VIDEO TRIGGER ================= */
+.hero-promo-trigger {
+  position: absolute;
+  left: 28px;
+  bottom: 30px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 100px;
+  padding: 0.45rem 1.15rem 0.45rem 0.5rem;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s ease;
+}
+
+.hero-promo-trigger:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.promo-play-ring {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #e11d48;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+}
+
+.promo-trigger-text {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .hero-promo-trigger {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 110px;
+    padding: 0.35rem 1rem 0.35rem 0.4rem;
+    font-size: 0.82rem;
+  }
+
+  .hero-promo-trigger:hover {
+    transform: translateX(-50%) translateY(-3px);
+  }
+
+  .promo-play-ring {
+    width: 32px;
+    height: 32px;
+    font-size: 0.72rem;
+  }
+}
+
+/* ================= FLAVOUR MARQUEE RIBBON ================= */
+.flavour-marquee {
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+  background: linear-gradient(90deg, #e11d48, #f97316, #d97706, #7c3aed, #059669, #e11d48);
+  padding: 0.85rem 0;
+  transform: rotate(-1.2deg) scale(1.02);
+  margin: -1.2rem -10px 0;
+  box-shadow: 0 12px 30px rgba(225, 29, 72, 0.25);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 26s linear infinite;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding-right: 1.6rem;
+}
+
+.marquee-item {
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.marquee-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  .flavour-marquee {
+    margin-top: -0.6rem;
+    padding: 0.65rem 0;
+  }
+
+  .marquee-item {
+    font-size: 0.78rem;
+  }
+}
+
+/* ================= TESTIMONIALS SECTION ================= */
+.testimonials-section {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(217, 119, 6, 0.07), transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(225, 29, 72, 0.07), transparent 40%);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.4rem;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  padding: 1.6rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.testimonial-stars {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 0.2rem;
+}
+
+.testimonial-text {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  flex-grow: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.t-avatar-coco { background: linear-gradient(135deg, #d97706, #b45309); }
+.t-avatar-mango { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+.t-avatar-guava { background: linear-gradient(135deg, #ec4899, #be185d); }
+.t-avatar-mixed { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+.testimonial-meta h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-pure);
+}
+
+.testimonial-meta span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ================= FAQ SECTION ================= */
+.faq-section {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(124, 58, 237, 0.06), transparent 42%),
+    radial-gradient(circle at 10% 85%, rgba(5, 150, 105, 0.06), transparent 42%);
+}
+
+.faq-list {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.faq-item {
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 1.15rem 1.4rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.faq-icon {
+  color: #e11d48;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(135deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-answer p {
+  padding: 0 1.4rem 1.25rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.faq-item.open .faq-answer {
+  max-height: 240px;
+}
+
+/* ================= FLOATING WHATSAPP PULSE ================= */
+.float-wa {
+  position: relative;
+}
+
+.wa-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #25d366;
+  animation: waPulse 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes waPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  70% { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
 }

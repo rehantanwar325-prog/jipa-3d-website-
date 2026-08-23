@@ -5,6 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>JEPH Bev Pvt. Ltd. | Natures Pride Flavoured Fruit Drinks</title>
   <meta name="description" content="JEPH Bev Pvt. Ltd., Jaipur — Manufacturer of Natures Pride premium fruit drinks (Coco Thunder, Mango, Guava, Mixed Fruit). Refreshing beverage manufacturing at Tagore Nagar, Ajmer Road." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://jipa-3d-website.vercel.app/" />
+  <meta name="theme-color" content="#e11d48" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Open Graph (WhatsApp / Facebook / LinkedIn sharing preview) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Natures Pride — JEPH Bev Pvt. Ltd." />
+  <meta property="og:title" content="JEPH Bev Pvt. Ltd. | Natures Pride Flavoured Fruit Drinks" />
+  <meta property="og:description" content="Premium flavoured fruit drinks manufactured in Jaipur — Coco Thunder, Mango, Guava & Mixed Fruit. Wholesale & dealership inquiries welcome." />
+  <meta property="og:url" content="https://jipa-3d-website.vercel.app/" />
+  <meta property="og:image" content="https://jipa-3d-website.vercel.app/hero-poster.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JEPH Bev Pvt. Ltd. | Natures Pride Flavoured Fruit Drinks" />
+  <meta name="twitter:description" content="Premium flavoured fruit drinks manufactured in Jaipur. Wholesale & dealership inquiries welcome." />
+  <meta name="twitter:image" content="https://jipa-3d-website.vercel.app/hero-poster.jpg" />
+
+  <!-- Local Business Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "JEPH Bev Pvt. Ltd.",
+    "alternateName": "Natures Pride",
+    "url": "https://jipa-3d-website.vercel.app/",
+    "logo": "https://jipa-3d-website.vercel.app/favicon.svg",
+    "description": "Manufacturer of Natures Pride premium flavoured fruit drinks based in Jaipur, Rajasthan. Product range includes Coco Thunder, Mango, Guava and Mixed Fruit drinks.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Plot No. 36-37, Tagore Nagar, Ajmer Road",
+      "addressLocality": "Jaipur",
+      "addressRegion": "Rajasthan",
+      "postalCode": "302021",
+      "addressCountry": "IN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-9876543210",
+      "contactType": "sales",
+      "areaServed": "IN",
+      "availableLanguage": ["Hindi", "English"]
+    }
+  }
+  </script>
   
   <!-- Google Fonts: trimmed to actually-used weights (600-900), loaded async for instant first paint -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -154,7 +205,35 @@
       </div>
       <span>Explore Fruit Drinks</span>
     </a>
+
+    <!-- HD Promo Video Trigger -->
+    <button class="hero-promo-trigger" id="openVideoModalBtn">
+      <span class="promo-play-ring"><i class="fa-solid fa-play"></i></span>
+      <span class="promo-trigger-text">Watch HD Promo</span>
+    </button>
   </section>
+
+  <!-- ================= FLAVOUR MARQUEE RIBBON ================= -->
+  <div class="flavour-marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <span class="marquee-item">🥥 Coco Thunder</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🥭 Mango Fruit Drink</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🍈 Pink Guava</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🍇 Mixed Fruit Blast</span><span class="marquee-dot"></span>
+        <span class="marquee-item">❄️ Best Served Chilled</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🏭 Made in Jaipur</span><span class="marquee-dot"></span>
+      </div>
+      <div class="marquee-group">
+        <span class="marquee-item">🥥 Coco Thunder</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🥭 Mango Fruit Drink</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🍈 Pink Guava</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🍇 Mixed Fruit Blast</span><span class="marquee-dot"></span>
+        <span class="marquee-item">❄️ Best Served Chilled</span><span class="marquee-dot"></span>
+        <span class="marquee-item">🏭 Made in Jaipur</span><span class="marquee-dot"></span>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= PRODUCTS SECTION (FIRST SECTION AFTER HERO) ================= -->
   <section class="section products-section" id="products">
@@ -596,6 +675,142 @@
     </div>
   </section>
 
+  <!-- ================= CUSTOMER TESTIMONIALS ================= -->
+  <section class="section testimonials-section" id="testimonials">
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-star"></i> WHAT OUR PARTNERS SAY</span>
+        <h2 class="main-heading">Trusted by <span class="title-gradient-fruit">Shopkeepers & Distributors</span></h2>
+        <p class="section-lead">Real feedback from retail partners and distributors across Rajasthan who stock Natures Pride drinks.</p>
+      </div>
+
+      <div class="testimonials-grid" data-animate="stagger-up">
+
+        <div class="testimonial-card glass-panel" data-tilt data-animate-child>
+          <div class="testimonial-stars" aria-label="5 star rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Coco Thunder meri dukaan ka sabse fast selling drink ban gaya hai. Customers roz repeat maangte hain. Packaging bhi premium hai."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar t-avatar-coco">RK</span>
+            <div class="testimonial-meta">
+              <h4>Ramesh Kumar</h4>
+              <span>Retail Shop Owner • Jaipur</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card glass-panel" data-tilt data-animate-child>
+          <div class="testimonial-stars" aria-label="5 star rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Mango flavour ki quality bilkul fresh fruit jaisi hai. Supply time pe milti hai aur rates wholesale mein bahut reasonable hain."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar t-avatar-mango">AS</span>
+            <div class="testimonial-meta">
+              <h4>Amit Sharma</h4>
+              <span>Distributor • Ajmer Road</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card glass-panel" data-tilt data-animate-child>
+          <div class="testimonial-stars" aria-label="5 star rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Shaadi season mein 50+ cases ka order diya, delivery next day mil gayi. Guests ne taste ki tareef ki. Ab har event mein yehi lagwate hain."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar t-avatar-guava">VP</span>
+            <div class="testimonial-meta">
+              <h4>Vikas Panwar</h4>
+              <span>Event Caterer • Jaipur</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card glass-panel" data-tilt data-animate-child>
+          <div class="testimonial-stars" aria-label="5 star rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"FSSAI certified product hone se customers ko confidence hota hai. Mixed Fruit sabse zyada chalti hai garmi mein. Highly recommended."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar t-avatar-mixed">MJ</span>
+            <div class="testimonial-meta">
+              <h4>Mohd. Javed</h4>
+              <span>Wholesale Merchant • Kishangarh</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ SECTION ================= -->
+  <section class="section faq-section" id="faq">
+    <div class="container">
+      <div class="section-title-wrap text-center" data-animate="fade-up">
+        <span class="sub-heading"><i class="fa-solid fa-circle-question"></i> FREQUENTLY ASKED QUESTIONS</span>
+        <h2 class="main-heading">Everything You <span class="title-gradient-fruit">Need to Know</span></h2>
+        <p class="section-lead">Quick answers about ordering, dealership and delivery of Natures Pride fruit drinks.</p>
+      </div>
+
+      <div class="faq-list" data-animate="fade-up">
+
+        <div class="faq-item glass-panel">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>What is the minimum order quantity for wholesale?</span>
+            <i class="fa-solid fa-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>The minimum wholesale order is typically 1 case (per flavour). For dealership and bulk pricing, contact our sales desk on WhatsApp with your monthly requirement for a custom quotation.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>Which areas do you deliver to?</span>
+            <i class="fa-solid fa-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>We deliver across Jaipur and major towns of Rajasthan including Ajmer, Kishangarh, and Beawar. For bulk orders outside Rajasthan, reach out to our distribution team for transport arrangements.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>Are Natures Pride drinks FSSAI certified?</span>
+            <i class="fa-solid fa-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Every batch is manufactured in our FSSAI-certified cleanroom facility at Tagore Nagar, Jaipur. Quality checks include Brix level, pH balance, colour accuracy and sensory testing before dispatch.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>How can I become an authorised distributor?</span>
+            <i class="fa-solid fa-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Fill the inquiry form below or message us on WhatsApp with your name, area and business type. Our sales team will call you within 24 working hours to discuss territory rights and margins.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>Which flavours are available?</span>
+            <i class="fa-solid fa-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Currently we offer 4 signature variants: Coco Thunder (coconut), Mango Fruit Drink, Pink Guava, and Mixed Fruit. All are available in chilled-ready bottles for retail and events.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ================= DISTRIBUTION & CONTACT ================= -->
   <section class="section contact-section" id="contact">
     <div class="container">
@@ -787,12 +1002,52 @@
     </div>
   </footer>
 
-  <!-- Floating Back to Top Button -->
+  <!-- Floating Quick Actions: WhatsApp Chat + Back to Top -->
   <div class="floating-quick-bar">
+    <a href="https://wa.me/919876543210?text=Hi%20JEPH%20Bev,%20I%20want%20to%20order%20Natures%20Pride%20Fruit%20Drinks" target="_blank" rel="noopener" class="float-btn float-wa" id="floatWhatsappBtn" title="Chat on WhatsApp" aria-label="Chat with us on WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="float-tooltip">Chat on WhatsApp</span>
+      <span class="wa-pulse-ring" aria-hidden="true"></span>
+    </a>
     <button class="float-btn float-top" id="backToTopBtn" title="Back to Top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
   </div>
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the minimum order quantity for wholesale?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The minimum wholesale order is typically 1 case (per flavour). For dealership and bulk pricing, contact our sales desk on WhatsApp with your monthly requirement for a custom quotation." }
+      },
+      {
+        "@type": "Question",
+        "name": "Which areas do you deliver to?",
+        "acceptedAnswer": { "@type": "Answer", "text": "We deliver across Jaipur and major towns of Rajasthan including Ajmer, Kishangarh, and Beawar. For bulk orders outside Rajasthan, reach out to our distribution team for transport arrangements." }
+      },
+      {
+        "@type": "Question",
+        "name": "Are Natures Pride drinks FSSAI certified?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every batch is manufactured in our FSSAI-certified cleanroom facility at Tagore Nagar, Jaipur. Quality checks include Brix level, pH balance, colour accuracy and sensory testing before dispatch." }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I become an authorised distributor?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Fill the inquiry form or message us on WhatsApp with your name, area and business type. Our sales team will call you within 24 working hours to discuss territory rights and margins." }
+      },
+      {
+        "@type": "Question",
+        "name": "Which flavours are available?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Currently we offer 4 signature variants: Coco Thunder (coconut), Mango Fruit Drink, Pink Guava, and Mixed Fruit. All are available in chilled-ready bottles for retail and events." }
+      }
+    ]
+  }
+  </script>
 
   <!-- ================= HD PROMO VIDEO MODAL (9:16 / 16:9 SWITCHER) ================= -->
   <div class="video-modal-backdrop" id="videoModalBackdrop" aria-hidden="true">
