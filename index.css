@@ -1041,7 +1041,8 @@ section[id] {
   height: 100%;
   max-height: 310px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.1));
+  /* NOTE: no per-frame filter here — CSS filters on playing video force expensive
+     GPU re-compositing of every frame and cause stutter on mobile devices */
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   z-index: 2;

@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isMobile = window.innerWidth <= 768;
 
+  // Tracks whether hero section is on screen (used to pause hero video decode when scrolled away)
+  let heroInView = true;
+
   // ================= 1. HEADER & NAVBAR SCROLL =================
   const header = document.getElementById('header');
   const menuToggle = document.getElementById('menuToggle');
@@ -131,6 +134,24 @@ document.addEventListener('DOMContentLoaded', () => {
     ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'].forEach(evt => {
       window.addEventListener(evt, unlockHeroVideo, { once: true, passive: true });
     });
+
+    // Pause hero video when scrolled out of view — frees GPU/decoder so product videos never stutter
+    if ('IntersectionObserver' in window) {
+      const heroSectionEl = document.getElementById('home');
+      if (heroSectionEl) {
+        const heroVisibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            heroInView = entry.isIntersecting;
+            if (heroInView && !bgVideo.dataset.userPaused) {
+              tryPlayVideo(bgVideo);
+            } else if (!heroInView && !bgVideo.paused) {
+              bgVideo.pause();
+            }
+          });
+        }, { threshold: 0.05 });
+        heroVisibilityObserver.observe(heroSectionEl);
+      }
+    }
   }
 
   // 2. Product Card Videos: Lazy Load & Play ONLY when scrolled into view (saves 10MB+ startup bandwidth)
@@ -250,11 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
       tryPlayVideo(bgVideo);
     });
 
-    // Visibility Change: pause when tab hidden
+    // Visibility Change: pause when tab hidden (also respects hero scroll visibility)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && !bgVideo.paused) {
         bgVideo.pause();
-      } else if (!document.hidden && !isManuallyPaused) {
+      } else if (!document.hidden && !isManuallyPaused && heroInView) {
         tryPlayVideo(bgVideo);
       }
     });
