@@ -6,21 +6,25 @@
   <title>JEPH Bev Pvt. Ltd. | Natures Pride Flavoured Fruit Drinks</title>
   <meta name="description" content="JEPH Bev Pvt. Ltd., Jaipur — Manufacturer of Natures Pride premium fruit drinks (Coco Thunder, Mango, Guava, Mixed Fruit). Refreshing beverage manufacturing at Tagore Nagar, Ajmer Road." />
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: trimmed to actually-used weights (600-900), loaded async for instant first paint -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" /></noscript>
+
+  <!-- Font Awesome Icons: async load = zero render-blocking -->
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
   
   <!-- Preload Critical Hero Video Poster for Instant 0-second Display -->
   <link rel="preload" as="image" href="hero-poster.webp" type="image/webp" fetchpriority="high" />
 
   <link rel="stylesheet" href="index.css" />
 
-  <!-- Three.js for 3D Particle Background -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <!-- Three.js is now loaded dynamically on desktop only (saves ~600KB on mobile) -->
   <!-- GSAP + ScrollTrigger for Scroll Animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -95,16 +99,17 @@
       <div class="video-overlay-bottom"></div>
     </div>
 
-    <!-- Instant 0ms Inline Playback Script (Triggers before heavy JS libraries) -->
+    <!-- Instant 0ms Inline Playback Script (Connection-aware: poster shows instantly everywhere) -->
     <script>
       (function() {
         var v = document.getElementById('heroFullscreenVideo');
-        if (v) {
-          v.muted = true;
-          v.defaultMuted = true;
-          if (window.innerWidth <= 768) {
-            v.poster = 'hero-poster-mobile.webp';
-          }
+        if (!v) return;
+        v.muted = true;
+        v.defaultMuted = true;
+        if (window.innerWidth <= 768) {
+          v.poster = 'hero-poster-mobile.webp';
+        }
+        var startVideo = function() {
           var p = v.play();
           if (p !== undefined) {
             p.catch(function() {
@@ -116,6 +121,16 @@
               });
             });
           }
+        };
+        var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        var slowNet = conn && (conn.saveData || /(^|\s)(slow-)?2g|3g(\s|$)/.test(conn.effectiveType || ''));
+        if (slowNet) {
+          v.preload = 'metadata';
+          v.removeAttribute('autoplay');
+          if (document.readyState === 'complete') { startVideo(); }
+          else { window.addEventListener('load', startVideo, { once: true }); }
+        } else {
+          startVideo();
         }
       })();
     </script>

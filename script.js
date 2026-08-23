@@ -492,13 +492,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ================= 8. THREE.JS 3D PARTICLES (DESKTOP ONLY) =================
-  const initThreeJsParticles = () => {
-    if (typeof THREE === 'undefined' || window.innerWidth <= 768) return;
-
+  // ================= 8. THREE.JS 3D PARTICLES (DESKTOP ONLY, DYNAMIC LOAD) =================
+  const startThreeJsParticles = () => {
     const canvas = document.getElementById('products3dCanvas');
     const productsSection = document.getElementById('products');
-    if (!canvas || !productsSection) return;
+    if (!canvas || !productsSection || typeof THREE === 'undefined') return;
 
     try {
       const scene = new THREE.Scene();
@@ -578,6 +576,21 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       // Graceful fallback if WebGL not available
     }
+  };
+
+  const initThreeJsParticles = () => {
+    if (window.innerWidth <= 768) return;
+
+    if (typeof THREE !== 'undefined') {
+      startThreeJsParticles();
+      return;
+    }
+
+    // Load Three.js (~600KB) only on desktop, after page is interactive
+    const threeScript = document.createElement('script');
+    threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    threeScript.onload = startThreeJsParticles;
+    document.head.appendChild(threeScript);
   };
 
 
